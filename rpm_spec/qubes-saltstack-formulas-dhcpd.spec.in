@@ -1,0 +1,43 @@
+Name:		qubes-saltstack-formulas-dhcpd
+Version:	@VERSION@
+Release:	@REL@
+Summary:	saltstack-formulas-dhcpd
+
+Group:		System administration tools
+License:	GPL 2.0
+BuildArch:  noarch
+URL:		https://www.qubes-os.org/
+Source:	%{name}-%{version}.tar.gz
+
+Patch0: 0001-Cache-necessary-files-for-rendering.patch
+
+Requires:	qubes-mgmt-salt
+
+
+%description
+
+
+%prep
+%autosetup -N
+mv dhcpd-formula/dhcpd .
+%autopatch -p1
+
+%build
+
+
+%install
+make install DESTDIR=%{buildroot} LIBDIR=%{_libdir} BINDIR=%{_bindir} SBINDIR=%{_sbindir} SYSCONFDIR=%{_sysconfdir}
+
+
+%files
+%defattr(-,root,root)
+%doc LICENSE README.md
+%attr(750, root, root) %dir /srv/formulas/base/saltstack-formulas-dhcpd
+/srv/formulas/base/saltstack-formulas-dhcpd/README.md
+/srv/formulas/base/saltstack-formulas-dhcpd/LICENSE
+/srv/formulas/base/saltstack-formulas-dhcpd/dhcpd
+
+%config(noreplace) /etc/salt/minion.d/saltstack-formulas-dhcpd.conf
+
+%changelog
+@CHANGELOG@

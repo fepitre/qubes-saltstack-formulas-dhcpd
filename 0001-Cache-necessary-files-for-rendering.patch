@@ -1,0 +1,33 @@
+From 7b0b3187611bd216d3785f1c3416d060ee04eb07 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Pierret=20=28fepitre=29?=
+ <frederic.pierret@qubes-os.org>
+Date: Sun, 2 Jun 2019 18:18:41 +0200
+Subject: [PATCH] Cache necessary files for rendering
+
+---
+ dhcpd/init.sls | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/dhcpd/init.sls b/dhcpd/init.sls
+index e79d0bc..9881804 100644
+--- a/dhcpd/init.sls
++++ b/dhcpd/init.sls
+@@ -1,5 +1,15 @@
+ {% from "dhcpd/map.jinja" import dhcpd with context %}
+ 
++cache_map_jinja:
++  file:
++    - cached
++    - name: salt://dhcpd/map.jinja
++
++cache_subnet_jinja:
++  file:
++    - cached
++    - name: salt://dhcpd/files/subnet.jinja
++
+ dhcpd:
+   pkg.installed:
+     - name: {{ dhcpd.server }}
+-- 
+2.21.0
+

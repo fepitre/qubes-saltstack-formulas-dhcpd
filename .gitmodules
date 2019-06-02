@@ -1,0 +1,4 @@
+[submodule "dhcpd-formula"]
+	path = dhcpd-formula
+	url = https://github.com/saltstack-formulas/dhcpd-formula
+	branch = master
