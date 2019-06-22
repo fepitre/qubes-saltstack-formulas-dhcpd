@@ -1,0 +1,38 @@
+From a4f4940691c3be24111e2102d7084d4ad3c9cfb6 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Pierret=20=28fepitre=29?=
+ <frederic.pierret@qubes-os.org>
+Date: Sat, 22 Jun 2019 14:53:32 +0200
+Subject: [PATCH] Qubes: basic debian integration
+
+---
+ dhcpd/init.sls | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/dhcpd/init.sls b/dhcpd/init.sls
+index 9881804..0198fa1 100644
+--- a/dhcpd/init.sls
++++ b/dhcpd/init.sls
+@@ -10,6 +10,20 @@ cache_subnet_jinja:
+     - cached
+     - name: salt://dhcpd/files/subnet.jinja
+ 
++/rw/config/qubes-bind-dirs.d/dhcpd.conf:
++  file.managed:
++    - makedirs: True
++    - mode: 0600
++    - contents: |
++        binds+=( '{{ dhcpd.config }}' )
++        binds+=( '{{ dhcpd.service_config }}' )
++
++bind-dirs-dhcpd:
++  cmd.run:
++    - name: /usr/lib/qubes/bind-dirs.sh umount && /usr/lib/qubes/bind-dirs.sh
++    - require:
++        - file: /rw/config/qubes-bind-dirs.d/dhcpd.conf
++
+ dhcpd:
+   pkg.installed:
+     - name: {{ dhcpd.server }}
+-- 
+2.21.0
+
