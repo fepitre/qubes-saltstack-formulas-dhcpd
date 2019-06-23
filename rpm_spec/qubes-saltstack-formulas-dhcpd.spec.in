@@ -11,6 +11,7 @@ Source:	%{name}-%{version}.tar.gz
 
 Patch0: 0001-Cache-necessary-files-for-rendering.patch
 Patch1: 0002-Qubes-basic-debian-integration.patch
+Patch2: 0003-Qubes-allow-vm-to-be-reached.patch
 
 Requires:	qubes-mgmt-salt
 

@@ -1,0 +1,33 @@
+From 23452f165ceafbc75ee182197f017439d5370c86 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Pierret=20=28fepitre=29?=
+ <frederic.pierret@qubes-os.org>
+Date: Sun, 23 Jun 2019 17:18:42 +0200
+Subject: [PATCH] Qubes: allow vm to be reached
+
+---
+ dhcpd/init.sls | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/dhcpd/init.sls b/dhcpd/init.sls
+index 0198fa1..cd20e7d 100644
+--- a/dhcpd/init.sls
++++ b/dhcpd/init.sls
+@@ -24,6 +24,15 @@ bind-dirs-dhcpd:
+     - require:
+         - file: /rw/config/qubes-bind-dirs.d/dhcpd.conf
+ 
++/rw/config/rc.local:
++    file.append:
++        - context:
++            - mode: 755
++        - text: |
++
++            # Allow DHCP requests
++            iptables -I INPUT 2 -p udp --dport 67:68 --sport 67:68 -j ACCEPT
++
+ dhcpd:
+   pkg.installed:
+     - name: {{ dhcpd.server }}
+-- 
+2.21.0
+
